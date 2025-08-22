@@ -11,8 +11,16 @@ export default defineConfig({
   root: 'src/renderer',
   build: {
     outDir: '../../dist/renderer',
-    emptyOutDir: true
+    emptyOutDir: true,
+    // Add these options:
+    assetsDir: '.', // Put assets in the root
+    rollupOptions: {
+      output: {
+        assetFileNames: '[name].[ext]' // Keep original filenames
+      }
+    }
   },
+  base: './', // This is important for Electron
   server: {
     port: 5173,
     strictPort: true

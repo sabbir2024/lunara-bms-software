@@ -1,6 +1,4 @@
 import useUsers from '../../hooks/useUsers';
-
-
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import {
     FiHome,
@@ -16,7 +14,6 @@ import {
 } from 'react-icons/fi';
 import { useEffect, useState } from 'react';
 import Navbar from '../../pages/share/navbar/Navbar';
-
 import ConfigEditor from '../../pages/share/ConfigEditor';
 import { FaFolderOpen } from 'react-icons/fa';
 import { MdCloudDone } from 'react-icons/md';
@@ -25,14 +22,11 @@ import { IoCloudOffline } from 'react-icons/io5';
 const DashboardLayout = () => {
     const { users, isLoading } = useUsers();
     const navigate = useNavigate();
-    // console.log('users', users, 'isLoading', isLoading);
-
-
 
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
     const [userMenuOpen, setUserMenuOpen] = useState(false);
-
     const [config, setConfig] = useState([]);
+    const [openCategory, setOpenCategory] = useState(null);
 
     useEffect(() => {
         const loadConfig = async () => {
@@ -52,6 +46,10 @@ const DashboardLayout = () => {
         setSidebarCollapsed(!sidebarCollapsed);
     };
 
+    const toggleCategory = (category) => {
+        setOpenCategory(openCategory === category ? null : category);
+    };
+
     useEffect(() => {
         if (!isLoading && !users?.data) {
             navigate('/login', { replace: true });
@@ -59,18 +57,17 @@ const DashboardLayout = () => {
     }, [users, isLoading, navigate]);
 
     if (isLoading) {
-        // লোডিং স্ক্রিন
         return (
             <div className="flex items-center justify-center min-h-screen">
                 <span className="loading loading-infinity loading-xl"></span>
             </div>
         );
     }
+
     return (
         <div className="flex h-screen bg-gray-50">
             {/* Sidebar */}
-            <div className={`fixed inset-y-0 left-0 z-50 bg-gray-900 transition-all duration-300 lg:static ${sidebarCollapsed ? 'w-20' : 'w-64'
-                }`}>
+            <div className={`fixed inset-y-0 left-0 z-50 bg-gray-900 transition-all duration-300 lg:static ${sidebarCollapsed ? 'w-20' : 'w-64'}`}>
                 <div className="flex items-center justify-between h-16 px-4 bg-gray-800">
                     {!sidebarCollapsed && (
                         <h1 className="text-white text-xl font-bold">Luanara_bms</h1>
@@ -83,45 +80,97 @@ const DashboardLayout = () => {
                     </button>
                 </div>
 
-                <nav className="mt-8">
+                <nav className="flex flex-wrap w-full justify-between space-y-52">
                     <div className="px-4 space-y-2">
-                        <NavItem
-                            icon={<FiHome />}
-                            text="Dashboard"
-                            collapsed={sidebarCollapsed}
-                            navigateLink='/dashboard'
-                        />
-                        <NavItem
-                            icon={<FiPieChart />}
-                            text="Analytics"
-                            navigateLink='/dashboard/analytics'
-                            collapsed={sidebarCollapsed}
-                        />
-                        <NavItem
-                            icon={<FiUsers />}
-                            text="Customer Due"
-                            collapsed={sidebarCollapsed}
-                            navigateLink='/dashboard/customer-due'
-                        />
-                        <NavItem
-                            icon={<FiMessageSquare />}
-                            text="Messages"
-                            collapsed={sidebarCollapsed}
-                            navigateLink='/dashboard/messages'
-                        />
-                        <NavItem
-                            icon={<FiShoppingCart />}
-                            text="Gatepass"
-                            collapsed={sidebarCollapsed}
-                            navigateLink='/dashboard/gate-pass'
-                        />
+                        {/* Dashboard Category */}
+                        <div className="collapse collapse-arrow text-white border border-base-300">
+                            <input
+                                type="radio"
+                                name="sidebar-accordion"
+                                checked={openCategory === 'dashboard'}
+                                onChange={() => toggleCategory('dashboard')}
+                            />
+                            <div className="collapse-title font-medium flex items-center">
+                                <FiHome className="mr-3" />
+                                <span>Dashboard</span>
+                            </div>
+                            <div className="collapse-content pl-4">
+                                <NavItem
+                                    icon={<FiHome />}
+                                    text="Overview"
+                                    navigateLink='/dashboard'
+                                    collapsed={sidebarCollapsed}
+                                />
+                                <NavItem
+                                    icon={<FiPieChart />}
+                                    text="Analytics"
+                                    navigateLink='/dashboard/analytics'
+                                    collapsed={sidebarCollapsed}
+                                />
+                            </div>
+                        </div>
+
+                        {/* Customer Management Category */}
+                        <div className="collapse collapse-arrow text-white border border-base-300">
+                            <input
+                                type="radio"
+                                name="sidebar-accordion"
+                                checked={openCategory === 'customers'}
+                                onChange={() => toggleCategory('customers')}
+                            />
+                            <div className="collapse-title font-medium flex items-center">
+                                <FiUsers className="mr-3" />
+                                <span>Customers</span>
+                            </div>
+                            <div className="collapse-content pl-4">
+                                <NavItem
+                                    icon={<FiUsers />}
+                                    text="Customer Due"
+                                    navigateLink='/dashboard/customer-due'
+                                    collapsed={sidebarCollapsed}
+                                />
+                                <NavItem
+                                    icon={<FiMessageSquare />}
+                                    text="Messages"
+                                    navigateLink='/dashboard/messages'
+                                    collapsed={sidebarCollapsed}
+                                />
+                            </div>
+                        </div>
+
+                        {/* Operations Category */}
+                        <div className="collapse collapse-arrow text-white border border-base-300">
+                            <input
+                                type="radio"
+                                name="sidebar-accordion"
+                                checked={openCategory === 'operations'}
+                                onChange={() => toggleCategory('operations')}
+                            />
+                            <div className="collapse-title font-medium flex items-center">
+                                <FiShoppingCart className="mr-3" />
+                                <span>Operations</span>
+                            </div>
+                            <div className="collapse-content pl-4">
+                                <NavItem
+                                    icon={<FiShoppingCart />}
+                                    text="Gatepass"
+                                    navigateLink='/dashboard/gate-pass'
+                                    collapsed={sidebarCollapsed}
+                                />
+                            </div>
+                        </div>
+
+                    </div>
+                    {/* Settings */}
+                    <div className="px-4 w-full">
                         <NavItem
                             icon={<FiSettings />}
                             text="Settings"
-                            collapsed={sidebarCollapsed}
                             navigateLink='/dashboard/settings'
+                            collapsed={sidebarCollapsed}
                         />
                     </div>
+
                 </nav>
             </div>
 
@@ -131,7 +180,6 @@ const DashboardLayout = () => {
                 <header className="flex items-center justify-between h-14 px-6 bg-white border-b border-gray-200">
                     <div className="flex items-center">
                         <div className="relative">
-
                             <Navbar />
                         </div>
                     </div>
@@ -156,9 +204,7 @@ const DashboardLayout = () => {
                                             ? <p className="text-sm">Location : {config.data.dataDirectory}</p>
                                             : <p className="text-sm">Backend Offline</p>
                                     }
-                                    {
-                                        config?.success && <ConfigEditor />
-                                    }
+
                                 </div>
                             </div>
                         </div>
@@ -183,12 +229,14 @@ const DashboardLayout = () => {
                                     <button className="block w-full text-left px-4 py-2 text-sm font-bold uppercase text-gray-700 hover:bg-gray-100">
                                         {users?.data?.name}
                                     </button>
-                                    <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        Settings
-                                    </button>
+                                    <Link to='/dashboard/settings'>
+                                        <button
+                                            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                            Settings
+                                        </button>
+                                    </Link>
                                     <div className="flex gap-3">
                                         <div className="dropdown dropdown-left">
-                                            <div tabIndex={32} role="button"> <FaFolderOpen title="Datebase location" /></div>
                                             <div
                                                 tabIndex={32}
                                                 className="dropdown-content card card-sm bg-base-100 z-1 w-64 shadow-md">
@@ -197,8 +245,6 @@ const DashboardLayout = () => {
                                                 </div>
                                             </div>
                                         </div>
-
-
                                     </div>
                                     <button
                                         onClick={() => {
@@ -220,8 +266,8 @@ const DashboardLayout = () => {
                 <main className="flex-1 overflow-auto p-6">
                     <Outlet />
                 </main>
-            </div >
-        </div >
+            </div>
+        </div>
     );
 };
 
@@ -241,7 +287,5 @@ const NavItem = ({ icon, text, collapsed = false, navigateLink }) => (
         {!collapsed && <span className="font-medium">{text}</span>}
     </NavLink>
 );
-
-
 
 export default DashboardLayout;

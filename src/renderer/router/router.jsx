@@ -5,6 +5,7 @@ import App from "../App";
 import Login from "../pages/registar/Login";
 import DashboardLayout from "../leyout/DashboardLayout/DashboardLayout";
 import DashboardHome from "../pages/dashboard/DashboardHome/DashboardHome";
+import Settings from "../pages/dashboard/settings/Settings";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
       {
         path: '',
         element: <DashboardHome />
+      },
+      {
+        path: 'settings',
+        element: <Settings />
       }
     ]
   }

@@ -1,14 +1,15 @@
 const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
-
-// Command line arguments থেকে development mode check করুন
 const isDev = process.argv.includes('--dev')
 
-// Express সার্ভার শুরু করুন
-require('../server/index.js')
+// Import the Express app
+const expressApp = require('../server/index.js');
+
+let mainWindow;
+let server;
 
 function createWindow() {
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
     icon: path.join(__dirname, '../../public/icon.png'),
@@ -17,10 +18,9 @@ function createWindow() {
       contextIsolation: true,
       preload: path.join(__dirname, 'preload.js')
     },
-    show: false // Initially hide the window
+    show: false
   })
 
-  // Development mode এ Vite dev server থেকে load করুন
   if (isDev) {
     console.log('Development mode: Loading from Vite dev server')
     mainWindow.loadURL('http://localhost:5173')
@@ -31,30 +31,41 @@ function createWindow() {
       })
       .catch((error) => {
         console.error('Failed to load from Vite dev server:', error)
-        // Fallback: Express server থেকে load করুন
-        mainWindow.loadURL('http://localhost:3001')
-          .then(() => {
-            console.log('Fallback: Loaded from Express server')
-            mainWindow.show()
-          })
-          .catch((fallbackError) => {
-            console.error('Failed to load from Express server:', fallbackError)
-          })
       })
   } else {
-    console.log('Production mode: Loading from Express server')
-    mainWindow.loadURL('http://localhost:3001')
-      .then(() => {
-        mainWindow.show()
-      })
-      .catch((error) => {
-        console.error('Failed to load from Express server:', error)
-      })
+    console.log('Production mode: Starting Express server and loading app')
+    
+    // Start Express server on port 3001
+    const PORT = 3001;
+    server = expressApp.listen(PORT, () => {
+      console.log(`Production server running at http://localhost:${PORT}`)
+      
+      // Load the app from the Express server
+      mainWindow.loadURL(`http://localhost:${PORT}`)
+        .then(() => {
+          mainWindow.show()
+          console.log('Successfully loaded from production server')
+        })
+        .catch((error) => {
+          console.error('Failed to load from production server:', error)
+          // Fallback: try loading file directly
+          mainWindow.loadFile(path.join(__dirname, '../../dist/renderer/index.html'))
+            .then(() => {
+              mainWindow.show()
+              console.log('Successfully loaded from local file')
+            })
+            .catch((fileError) => {
+              console.error('Failed to load file:', fileError)
+            })
+        })
+    })
   }
 
-  // Window closed event
   mainWindow.on('closed', () => {
     console.log('Window closed')
+    if (server) {
+      server.close()
+    }
   })
 }
 
@@ -71,16 +82,15 @@ app.whenReady().then(() => {
 
 app.on('window-all-closed', () => {
   console.log('All windows closed')
+  if (server) {
+    server.close()
+  }
   if (process.platform !== 'darwin') {
     app.quit()
   }
 })
 
-app.on('before-quit', () => {
-  console.log('App is quitting')
-})
-
-// IPC কমিউনিকেশন হ্যান্ডলার
+// IPC communication handler
 ipcMain.handle('get-message', async () => {
   try {
     const response = await fetch('http://localhost:3001/api/message')
@@ -92,61 +102,13 @@ ipcMain.handle('get-message', async () => {
   }
 })
 
-// App ready event
-app.on('ready', () => {
-  console.log('Electron app is ready')
+// Health check IPC
+ipcMain.handle('health-check', async () => {
+  try {
+    const response = await fetch('http://localhost:3001/api/health')
+    const data = await response.json()
+    return data
+  } catch (error) {
+    return { status: 'ERROR', message: 'Server not reachable' }
+  }
 })
-
-
-// const { app, BrowserWindow, ipcMain } = require('electron')
-// const path = require('path')
-// const isDev = process.argv.includes('--dev')
-
-// // Express server
-// require('../server/index.js')
-
-// function createWindow() {
-//   const mainWindow = new BrowserWindow({
-//     width: 1200,
-//     height: 800,
-//     icon: path.join(__dirname, '../../public/icon.png'),
-//     webPreferences: {
-//       nodeIntegration: false,
-//       contextIsolation: true,
-//       preload: path.join(__dirname, 'preload.js')
-//     },
-//     show: false
-//   })
-
-//   if (isDev) {
-//     console.log('Development mode: Loading from Vite dev server')
-//     mainWindow.loadURL('http://localhost:5173')
-//       .then(() => {
-//         mainWindow.show()
-//         mainWindow.webContents.openDevTools()
-//       })
-//       .catch(() => {
-//         mainWindow.loadURL('http://localhost:3001').then(() => mainWindow.show())
-//       })
-//   } else {
-//     console.log('Production mode: Loading from local build')
-//     mainWindow.loadFile(path.join(__dirname, '../../dist/renderer/index.html'))
-//       .then(() => mainWindow.show())
-//       .catch((error) => {
-//         console.error('Failed to load local index.html:', error)
-//       })
-//   }
-
-//   mainWindow.on('closed', () => console.log('Window closed'))
-// }
-
-// app.whenReady().then(() => {
-//   createWindow()
-//   app.on('activate', () => {
-//     if (BrowserWindow.getAllWindows().length === 0) createWindow()
-//   })
-// })
-
-// app.on('window-all-closed', () => {
-//   if (process.platform !== 'darwin') app.quit()
-// })
