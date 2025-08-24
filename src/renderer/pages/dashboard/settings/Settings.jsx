@@ -174,12 +174,20 @@ const Settings = () => {
         name: 'All Responsibilities',
         children: [
             {
-                id: 'finance',
-                name: 'Finance',
+                id: 'dashboard',
+                name: 'Dashboard',
                 children: [
-                    { id: 'budget', name: 'Budget Management' },
-                    { id: 'expenses', name: 'Expense Approval' },
-                    { id: 'reports', name: 'Financial Reports' }
+                    { id: 'overview', name: 'Overviewt' },
+                    { id: 'analytics', name: 'Analytics' },
+                ]
+            },
+            {
+                id: 'acton',
+                name: 'Action',
+                children: [
+                    { id: 'removeCustomer', name: 'Remove Customer' },
+                    { id: 'removeProduct', name: 'Remove Product' },
+                    { id: 'config', name: 'Config' },
                 ]
             },
             {
@@ -187,7 +195,10 @@ const Settings = () => {
                 name: 'Operations',
                 children: [
                     { id: 'inventory', name: 'Inventory Management' },
-                    { id: 'logistics', name: 'Logistics' },
+                    { id: 'gatePass', name: 'Gate Pass' },
+                    { id: 'addProduct', name: 'Add Product' },
+                    { id: 'addCustomer', name: 'Add Customer' },
+
                     { id: 'maintenance', name: 'Maintenance' }
                 ]
             },
