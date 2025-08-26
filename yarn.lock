@@ -2870,6 +2870,11 @@ path-type@^2.0.0:
   dependencies:
     pify "^2.0.0"
 
+pdf-viewer@^0.8.1:
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/pdf-viewer/-/pdf-viewer-0.8.1.tgz#290c89f5b57c6ceb2a564e0a86140f88303698c1"
+  integrity sha512-EO3cHnloOYEzT/v9Inz8oaX+1RoL/lJmRlACQNoB9MK11zDaYHyz9QX+5/sXtn04kl0IcCedSXnyx1m3PSM/Rw==
+
 pend@~1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/pend/-/pend-1.2.0.tgz#7a57eb550a6783f9115331fcf4663d5c8e007a50"
@@ -3021,6 +3026,11 @@ react-router@7.8.1, react-router@^7.8.1:
   dependencies:
     cookie "^1.0.1"
     set-cookie-parser "^2.6.0"
+
+react-to-print@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/react-to-print/-/react-to-print-3.1.1.tgz#dc7c4870d55e09930f4b7a32b68dabbb72d8ae5f"
+  integrity sha512-N0MUMhpl8nkGri13BjP7zusj3B/j+1eMOTt8N8PYuhBYGzA4PqTXqcihJ9cZw996dvhV6mBdwafIQCg3Ap5bKg==
 
 react@^18.2.0:
   version "18.3.1"

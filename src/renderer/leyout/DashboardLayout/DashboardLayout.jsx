@@ -29,6 +29,24 @@ const DashboardLayout = () => {
         loadConfig();
     }, []);
 
+    // Add keyboard shortcut for open (Ctrl+o)
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if ((event.ctrlKey || event.metaKey) && event.key === 'o') {
+                event.preventDefault();
+                // Use browser's default print dialog instead of our custom function
+                // window.print();
+                // console.log('window', window);
+
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, []);
+
     const toggleSidebar = () => setSidebarCollapsed(!sidebarCollapsed);
     const toggleCategory = (category) => setOpenCategory(openCategory === category ? null : category);
 

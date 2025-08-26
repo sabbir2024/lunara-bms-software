@@ -16,8 +16,7 @@
     "postinstall": "electron-builder install-app-deps",
     "dist:packager": "electron-packager . LuanaraBMS --platform=win32 --arch=x64 --out=dist-packager --overwrite",
     "test:production": "npm run build && cross-env NODE_ENV=production node src/server/index.js"
-  
-},
+  },
   "keywords": [
     "electron",
     "vite",
@@ -44,12 +43,14 @@
     "cors": "^2.8.5",
     "daisyui": "^5.0.50",
     "express": "^4.18.2",
+    "pdf-viewer": "^0.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.6.0",
     "react-icons": "^5.5.0",
     "react-router": "^7.8.1",
     "react-router-dom": "^7.8.1",
+    "react-to-print": "^3.1.1",
     "serve-static": "^2.2.0",
     "tailwindcss": "^4.1.12"
   },
@@ -71,7 +72,9 @@
       "target": [
         {
           "target": "nsis",
-          "arch": ["ia32"] 
+          "arch": [
+            "ia32"
+          ]
         }
       ],
       "icon": "public/icon.png"
