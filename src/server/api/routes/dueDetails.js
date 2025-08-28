@@ -5,7 +5,6 @@ const dueDetails = Collection('dueDetails');
 
 
 router.post('/', (req, res) => {
-  console.log('Incoming body:', req.body);
   try {
     const customers = dueDetails.find({});
 

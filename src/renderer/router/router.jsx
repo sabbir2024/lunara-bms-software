@@ -7,6 +7,11 @@ import DashboardLayout from "../leyout/DashboardLayout/DashboardLayout";
 import DashboardHome from "../pages/dashboard/DashboardHome/DashboardHome";
 import Settings from "../pages/dashboard/settings/Settings";
 import Gatepass from "../pages/dashboard/gate-pass/Gatepass";
+import CustomerList from "../pages/dashboard/customer/customer-list/CustomerList";
+import CustomerDetails from "../pages/dashboard/customer/customerDetails/CustomerDetails";
+import useAxiosSecure from "../hooks/useAxiosSecure";
+
+const axiosSecure = useAxiosSecure();
 
 const router = createBrowserRouter([
   {
@@ -39,6 +44,18 @@ const router = createBrowserRouter([
       {
         path: 'gate-pass',
         element: <Gatepass />
+      },
+      {
+        path: 'customer-due',
+        element: <CustomerList />
+      },
+      {
+        path: '/dashboard/customer-due-details/customer_id/:id',
+        element: <CustomerDetails />,
+        loader: async ({ params }) => {
+          const { data } = await axiosSecure.get(`/dueDetails/${params.id}`);
+          return data?.data
+        },
       },
     ]
   }

@@ -1,4 +1,4 @@
-import { FaEdit, FaFolderOpen, FaBell } from "react-icons/fa";
+import { FaEdit, FaFolderOpen } from "react-icons/fa";
 import { IoChevronBackCircleSharp, IoChevronForwardCircle } from "react-icons/io5";
 import { FcAddDatabase, FcDeleteDatabase, FcHome, FcPrint, FcSearch } from "react-icons/fc";
 import { RxTextNone } from "react-icons/rx";
@@ -6,7 +6,6 @@ import { Link, useNavigate, useSearchParams } from "react-router";
 import { useEffect, useState } from "react";
 import { MdDelete } from "react-icons/md";
 import Calculator from "../../../components/calculator/Calculator";
-import ConfigEditor from "../ConfigEditor";
 import { useNav } from "../../../provider/NavProvider";
 import Help from "../help/Help";
 

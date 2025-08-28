@@ -45,6 +45,52 @@ export const FuctonProvider = ({ children }) => {
 
     const [customerCount, totalDueAmount] = customersDetails;
 
+    const dueDetails = useMemo(() => {
+        if (!dueList?.data) return [];
+
+        const customerDue = dueList?.data?.map(customer => ({
+            _id: customer._id,
+            name: customer.name,
+            guardian: customer.guardian || '',
+            age: customer.age || '',
+            phone: customer.phone || '',
+            address: customer.address || '',
+            totalDue: customer.entries?.reduce((sum, entry) => sum + (entry.due || 0), 0) || 0,
+            totalPaid: customer.entries?.reduce((sum, entry) => sum + (entry.paid || 0), 0) || 0,
+            totalAmount: customer.entries?.reduce((sum, entry) => sum + (entry.total || 0), 0) || 0,
+            entries: customer.entries?.map(entry => ({
+                date: entry.date || '',
+                total: entry.total || 0,
+                paid: entry.paid || 0,
+                due: entry.due || 0,
+                gatepassNo: entry.gatepassNo || '',
+                updateByLoggedUser: entry.updateByLoggedUser || {},
+                products: entry.products?.map(product => ({
+                    _id: product._id,
+                    name: product.name,
+                    generic: product.generic,
+                    strength: product.strength,
+                    manufacturer: product.manufacturer,
+                    price: product.price,
+                    cost: product.cost,
+                    qty: product.qty,
+                    sold: product.sold
+                })) || []
+            })) || []
+        }));
+
+        return customerDue;
+    }, [dueList]);
+
+    const customerdueNow = (_id) => {
+        const customer = dueDetails.find(c => c._id === _id);
+        return customer
+    }
+
+
+
+
+
     const saleDetails = useMemo(() => {
         if (isLazy || !sale?.data) return {
             getOverallTotals: () => ({ totalSales: 0, totalPaid: 0, totalDue: 0, transactions: 0 }),
@@ -139,6 +185,8 @@ export const FuctonProvider = ({ children }) => {
         customersDetails,
         customerCount,
         totalDueAmount,
+        dueDetails,
+        customerdueNow,
 
         // Sales data
         dayWaysSale,        // Array of daily sales: [{date, totalSales, totalPaid, totalDue, transactions}]
