@@ -52,10 +52,10 @@ const router = createBrowserRouter([
       {
         path: '/dashboard/customer-due-details/customer_id/:id',
         element: <CustomerDetails />,
-        loader: async ({ params }) => {
-          const { data } = await axiosSecure.get(`/dueDetails/${params.id}`);
-          return data?.data
-        },
+        // loader: async ({ params }) => {
+        //   const { data } = await axiosSecure.get(`/dueDetails/${params.id}`);
+        //   return data?.data
+        // },
       },
     ]
   }

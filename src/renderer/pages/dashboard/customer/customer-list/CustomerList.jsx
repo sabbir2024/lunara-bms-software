@@ -8,8 +8,10 @@ import { useState, useEffect } from "react";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import toast from "react-hot-toast";
 import { usefucton } from "../../../../provider/FunctionProvider";
+import useDue from "../../../../hooks/useDue";
 
 const CustomerList = () => {
+    const { refetch: reload } = useDue();
     const { customers, isLoading, refetch } = useCustomer();
     const [searchParams, setSearchParams] = useSearchParams();
     const { customerdueNow } = usefucton()
@@ -75,6 +77,7 @@ const CustomerList = () => {
             const { data } = await axiosSecure.put(`/customers/${editFormData?._id}`, editFormData);
             if (data?.updated > 0) {
                 refetch();
+                reload();
                 toast.success('Customer Update Successful ')
             }
         } catch (error) {
@@ -92,6 +95,7 @@ const CustomerList = () => {
             const { data } = await axiosSecure.delete(`/customers/${_id}`);
             if (data?.deletedCount > 0) {
                 refetch();
+                reload();
                 toast.success('Customer Removed Successfully');
             }
         } catch (error) {
@@ -153,7 +157,7 @@ const CustomerList = () => {
                                                     <FaUserEdit />
                                                 </button>
                                                 <button
-                                                    onClick={() => handleRemoved(customer._id)}
+                                                    onClick={() => handleRemoved(customer._id + 1)}
                                                     className="btn btn-xs btn-outline hover:bg-red-700 hover:scale-125"
                                                 >
                                                     <MdGroupRemove />

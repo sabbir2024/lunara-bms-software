@@ -31,7 +31,7 @@ router.post('/', (req, res) => {
       updated = newDoc;
     }
 
-    res.status(201).json({ success: true, data: updated });
+    res.status(201).json({ success: true });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }

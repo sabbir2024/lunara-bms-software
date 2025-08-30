@@ -16,7 +16,7 @@ export const usefucton = () => {
 export const FuctonProvider = ({ children }) => {
     const [isLoading, setisLoading] = useState(true);
     const { customers, isLoading: isPending } = useCustomer();
-    const { dueList, isLoading: isWaiting } = useDue();
+    const { dueList, isLoading: isWaiting, refetch } = useDue();
     const { sale, isLoading: isLazy } = useSale();
 
     // Update loading state based on hooks
@@ -79,6 +79,7 @@ export const FuctonProvider = ({ children }) => {
             })) || []
         }));
 
+        refetch()
         return customerDue;
     }, [dueList]);
 
