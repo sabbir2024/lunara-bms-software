@@ -11,6 +11,7 @@ router.post('/', (req, res) => {
     };
 
     const result = products.insert(newProduct);
+console.log('newProduct',newProduct,'result', result);
 
     res.status(201).json({ success: true, data: result });
   } catch (err) {

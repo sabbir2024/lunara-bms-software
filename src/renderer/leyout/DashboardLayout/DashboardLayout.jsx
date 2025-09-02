@@ -3,6 +3,8 @@ import { Outlet, NavLink, useNavigate, Link } from 'react-router-dom';
 import {
     FiHome, FiPieChart, FiUsers, FiSettings, FiBell, FiMenu, FiChevronLeft, FiMessageSquare, FiShoppingCart
 } from 'react-icons/fi';
+import { GiMussel } from "react-icons/gi";
+
 import { useEffect, useState } from 'react';
 import Navbar from '../../pages/share/navbar/Navbar';
 import { MdCloudDone } from 'react-icons/md';
@@ -98,6 +100,18 @@ const DashboardLayout = () => {
                         links={[
                             { icon: <FiUsers className="text-gray-600" />, text: 'Customer Due', to: '/dashboard/customer-due' },
                             { icon: <FiMessageSquare className="text-gray-600" />, text: 'Messages', to: '/dashboard/messages' }
+                        ]}
+                    />
+                    {/* Products */}
+                    <SidebarCategory
+                        icon={<GiMussel className="text-gray-600" />}
+                        title="Products"
+                        collapsed={sidebarCollapsed}
+                        openCategory={openCategory}
+                        setOpenCategory={toggleCategory}
+                        categoryKey="products"
+                        links={[
+                            { icon: <GiMussel className="text-gray-600" />, text: 'Product List', to: '/dashboard/product-list' },
                         ]}
                     />
                     {/* Operations */}

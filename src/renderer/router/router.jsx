@@ -10,6 +10,7 @@ import Gatepass from "../pages/dashboard/gate-pass/Gatepass";
 import CustomerList from "../pages/dashboard/customer/customer-list/CustomerList";
 import CustomerDetails from "../pages/dashboard/customer/customerDetails/CustomerDetails";
 import useAxiosSecure from "../hooks/useAxiosSecure";
+import ProductList from "../pages/dashboard/products/productList/ProductList";
 
 const axiosSecure = useAxiosSecure();
 
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
         //   const { data } = await axiosSecure.get(`/dueDetails/${params.id}`);
         //   return data?.data
         // },
+      },
+      {
+        path: 'product-list',
+        element: <ProductList />
       },
     ]
   }
