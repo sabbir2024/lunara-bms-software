@@ -1,5 +1,6 @@
 import useUsers from '../../hooks/useUsers';
 import { Outlet, NavLink, useNavigate, Link } from 'react-router-dom';
+
 import {
     FiHome, FiPieChart, FiUsers, FiSettings, FiBell, FiMenu, FiChevronLeft, FiMessageSquare, FiShoppingCart
 } from 'react-icons/fi';
@@ -7,7 +8,7 @@ import { GiMussel } from "react-icons/gi";
 
 import { useEffect, useState } from 'react';
 import Navbar from '../../pages/share/navbar/Navbar';
-import { MdCloudDone } from 'react-icons/md';
+import { MdCloudDone, MdReceipt } from 'react-icons/md';
 import { IoCloudOffline } from 'react-icons/io5';
 
 const DashboardLayout = () => {
@@ -112,6 +113,7 @@ const DashboardLayout = () => {
                         categoryKey="products"
                         links={[
                             { icon: <GiMussel className="text-gray-600" />, text: 'Product List', to: '/dashboard/product-list' },
+                            { icon: <MdReceipt className="text-gray-600" />, text: 'Product Received', to: '/dashboard/product-rec' },
                         ]}
                     />
                     {/* Operations */}
@@ -160,6 +162,7 @@ const DashboardLayout = () => {
                 </header>
 
                 <main className="flex-1 overflow-auto  bg-gradient-to-br from-indigo-50 to-purple-50">
+
 
                     <Outlet />
                 </main>

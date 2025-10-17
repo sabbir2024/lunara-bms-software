@@ -11,6 +11,7 @@ import CustomerList from "../pages/dashboard/customer/customer-list/CustomerList
 import CustomerDetails from "../pages/dashboard/customer/customerDetails/CustomerDetails";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import ProductList from "../pages/dashboard/products/productList/ProductList";
+import ProductRec from "../pages/dashboard/received/product-rec/ProductRec";
 
 const axiosSecure = useAxiosSecure();
 
@@ -61,6 +62,10 @@ const router = createBrowserRouter([
       {
         path: 'product-list',
         element: <ProductList />
+      },
+      {
+        path: 'product-rec',
+        element: <ProductRec />
       },
     ]
   }
